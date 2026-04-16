@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MODOU LÔ — 8ème Roi des Arènes</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ─────────────────────────────────────────
+   RESET & VARIABLES
+───────────────────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --red:#E02020;
+  --red-bright:#FF3737;
+  --glow:rgba(224,32,32,.45);
+  --bg:#07080C;
+  --card:#0D0F17;
+  --card2:#131620;
+  --border:rgba(255,255,255,.07);
+  --border-red:rgba(224,32,32,.22);
+  --text:#F0EDE8;
+  --muted:#50556A;
+  --muted2:#8890A4;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--red)}
+a{text-decoration:none;color:inherit}
+img{display:block;width:100%;height:100%;object-fit:cover}
+
+/* ── IMAGE HELPERS ── */
+.hero-bg{position:absolute;inset:0;overflow:hidden;z-index:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:top center;filter:brightness(.45) contrast(1.15) saturate(.7)}
+.hero-bg::after{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,rgba(7,8,12,.97) 0%,rgba(7,8,12,.65) 50%,rgba(7,8,12,.2) 100%),
+    linear-gradient(0deg,rgba(7,8,12,1) 0%,transparent 20%);
+}
+.ph-wrap{position:absolute;inset:0;overflow:hidden}
+.ph-wrap img{width:100%;height:100%;object-fit:cover;filter:brightness(.55) saturate(.7) contrast(1.1)}
+.ph-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(7,8,12,.9),transparent 55%)}
+.gal-img{position:absolute;inset:0;overflow:hidden}
+.gal-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.5) saturate(.6) contrast(1.1);transition:transform .65s cubic-bezier(.25,.46,.45,.94),filter .4s}
+.gal-item:hover .gal-img img{transform:scale(1.08);filter:brightness(.6) saturate(.7)}
+.gal-img::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(7,8,12,.6),transparent 55%)}
+
+/* ── UTILITIES ── */
+.red{color:var(--red)}
+.hollow{color:transparent;-webkit-text-stroke:1px rgba(224,32,32,.38)}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+  color:var(--red);border:1px solid var(--border-red);padding:8px 18px;border-radius:2px;
+}
+.chip::before{content:'';width:6px;height:6px;background:var(--red);border-radius:50%;box-shadow:0 0 8px var(--red);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ─────────────────────────────────────────
+   NAV
+───────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:22px 60px;
+  background:rgba(7,8,12,.82);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:background .3s;
+}
+.nav-logo{font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:6px;color:var(--text)}
+.nav-logo em{color:var(--red);font-style:normal}
+.nav-menu{display:flex;gap:36px;list-style:none}
+.nav-menu a{font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);transition:color .25s}
+.nav-menu a:hover{color:var(--text)}
+.nav-cta{
+  padding:9px 24px;background:var(--red);
+  color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  transition:box-shadow .3s,transform .3s;
+}
+.nav-cta:hover{box-shadow:0 4px 24px var(--glow);transform:translateY(-1px)}
+
+/* ── HAMBURGER ── */
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px;z-index:300}
+.nav-hamburger span{display:block;width:24px;height:2px;background:var(--red);border-radius:2px;transition:transform .35s,opacity .35s}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ── MOBILE OVERLAY ── */
+.nav-mobile-menu{
+  display:none;position:fixed;inset:0;
+  background:rgba(7,8,12,.97);z-index:250;
+  flex-direction:column;align-items:center;justify-content:center;
+  backdrop-filter:blur(16px);
+}
+.nav-mobile-menu.open{display:flex}
+.nav-mob-inner{text-align:center;display:flex;flex-direction:column;align-items:center}
+.nav-mob-inner ul{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:36px}
+.nav-mob-inner ul li a{
+  font-family:'Bebas Neue',cursive;font-size:42px;letter-spacing:4px;
+  color:var(--muted2);transition:color .25s;display:block;padding:6px 0;
+}
+.nav-mob-inner ul li a:hover{color:var(--red)}
+
+/* ─────────────────────────────────────────
+   HERO — full bleed, left-aligned
+───────────────────────────────────────── */
+#hero{
+  min-height:100vh;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.hero-main{
+  flex:1;display:grid;grid-template-columns:1fr 1fr;
+  padding-top:80px;min-height:calc(100vh - 80px);
+  position:relative;z-index:2;
+}
+.hero-left{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:80px 60px 120px;
+  position:relative;
+}
+.hero-left::before{
+  content:'';position:absolute;left:0;top:18%;bottom:18%;
+  width:3px;background:linear-gradient(180deg,transparent,var(--red),transparent);
+  opacity:.6;
+}
+.hero-eyebrow{margin-bottom:32px}
+.hero-title{
+  font-family:'Bebas Neue',cursive;
+  font-size:clamp(80px,9.5vw,130px);
+  line-height:.88;letter-spacing:2px;margin-bottom:14px;
+}
+.hero-title .t1{display:block;color:var(--text)}
+.hero-title .t2{display:block;color:transparent;-webkit-text-stroke:1.5px var(--red);text-shadow:0 0 80px rgba(224,32,32,.18)}
+.hero-title .t3{display:block;color:var(--red);text-shadow:0 0 60px rgba(224,32,32,.4);font-size:.55em;letter-spacing:6px}
+.hero-tagline{
+  font-size:11px;letter-spacing:5px;text-transform:uppercase;
+  color:var(--muted2);margin-bottom:30px;
+  display:flex;align-items:center;gap:14px;
+}
+.hero-tagline::before{content:'';width:36px;height:1px;background:var(--red);opacity:.5}
+.hero-desc{font-size:14px;line-height:1.9;color:var(--muted2);max-width:440px;margin-bottom:48px}
+.hero-desc strong{color:var(--text)}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn-main{
+  padding:14px 36px;background:var(--red);color:#fff;
+  font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  transition:box-shadow .3s,transform .3s;
+}
+.btn-main:hover{box-shadow:0 8px 32px var(--glow);transform:translateY(-2px)}
+.btn-sec{
+  padding:14px 36px;border:1px solid rgba(224,32,32,.4);
+  color:var(--red);font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  transition:background .25s;
+}
+.btn-sec:hover{background:rgba(224,32,32,.08)}
+
+/* Hero right — floating badges */
+.hero-right{position:relative;z-index:3}
+.hero-badge{
+  position:absolute;background:rgba(13,15,23,.92);
+  border:1px solid var(--border-red);backdrop-filter:blur(12px);
+  padding:20px 26px;
+}
+.hb1{bottom:160px;left:40px}
+.hb2{top:120px;right:60px}
+.hb-num{font-family:'Bebas Neue',cursive;font-size:34px;color:var(--red);letter-spacing:2px;line-height:1}
+.hb-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);margin-top:4px}
+
+/* Stats strip */
+.hero-strip{
+  position:absolute;bottom:0;left:0;right:0;
+  display:flex;border-top:1px solid var(--border);z-index:10;
+  background:rgba(7,8,12,.97);backdrop-filter:blur(10px);
+}
+.hs-item{
+  flex:1;padding:22px 28px;
+  border-right:1px solid var(--border);
+  display:flex;align-items:center;gap:14px;
+}
+.hs-item:last-child{border-right:none}
+.hs-bar{width:3px;height:36px;background:linear-gradient(180deg,var(--red),transparent);flex-shrink:0}
+.hs-num{font-family:'Bebas Neue',cursive;font-size:28px;color:var(--text);letter-spacing:1px;line-height:1}
+.hs-lbl{font-size:9px;color:var(--muted2);letter-spacing:1px;line-height:1.4;text-transform:uppercase}
+
+/* ─────────────────────────────────────────
+   SECTION BASE
+───────────────────────────────────────── */
+.sec{padding:110px 60px;max-width:1280px;margin:0 auto}
+.sec-full{background:var(--card)}
+.sec-full .sec-inner{max-width:1280px;margin:0 auto;padding:110px 60px}
+.sec-head{margin-bottom:64px}
+.sec-tag{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--red);margin-bottom:12px;opacity:.8}
+.sec-h{font-family:'Bebas Neue',cursive;font-size:clamp(44px,5.5vw,72px);letter-spacing:3px;line-height:.95;color:var(--text)}
+.div{height:1px;background:linear-gradient(90deg,transparent,rgba(224,32,32,.12),transparent)}
+
+/* ─────────────────────────────────────────
+   SECTION 1 — IDENTITÉ
+───────────────────────────────────────── */
+#identite .id-wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:4px}
+.id-visual{
+  height:560px;position:relative;overflow:hidden;
+  background:var(--card);border:1px solid var(--border);
+}
+.id-visual-foot{
+  position:absolute;bottom:0;left:0;right:0;z-index:3;
+  padding:20px 28px 24px;
+  background:linear-gradient(0deg,rgba(7,8,12,.98),transparent);
+  display:flex;align-items:flex-end;gap:18px;
+}
+.id-big-num{
+  font-family:'Bebas Neue',cursive;font-size:70px;
+  color:var(--red);letter-spacing:2px;line-height:.85;
+  text-shadow:0 0 40px rgba(224,32,32,.3);
+}
+.id-big-label .top{display:block;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted2);margin-bottom:4px}
+.id-big-label .bot{display:block;font-family:'Bebas Neue',cursive;font-size:16px;letter-spacing:3px;color:var(--text)}
+
+.id-content{
+  background:var(--card);border:1px solid var(--border);
+  padding:52px 48px;display:flex;flex-direction:column;justify-content:center;
+}
+.id-name{font-family:'Bebas Neue',cursive;font-size:clamp(34px,4vw,52px);letter-spacing:3px;line-height:1;margin-bottom:4px}
+.id-sub{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:28px;opacity:.9}
+.id-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+.id-tag{
+  font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  padding:5px 12px;background:rgba(224,32,32,.07);
+  border:1px solid rgba(224,32,32,.18);color:var(--red);border-radius:2px;
+}
+.id-text{font-size:14px;line-height:1.9;color:var(--muted2);margin-bottom:14px}
+.id-text strong{color:var(--text);font-weight:600}
+.id-text em{color:rgba(240,237,232,.7);font-style:italic}
+.id-facts{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:28px}
+.id-fact{
+  padding:14px 16px;background:rgba(224,32,32,.04);
+  border-left:2px solid rgba(224,32,32,.18);
+}
+.id-fact-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--red);opacity:.65;margin-bottom:5px}
+.id-fact-val{font-size:13px;font-weight:600}
+
+/* ─────────────────────────────────────────
+   SECTION 2 — TECHNIQUE
+───────────────────────────────────────── */
+#technique .tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.tech-card{
+  padding:44px 36px;background:var(--bg);border:1px solid var(--border);
+  border-top:3px solid transparent;position:relative;overflow:hidden;
+  transition:border-top-color .3s,background .3s;
+}
+.tech-card:hover{border-top-color:var(--red);background:rgba(14,16,24,.8)}
+.tech-ico{font-size:36px;margin-bottom:20px}
+.tech-bg-num{
+  position:absolute;bottom:-18px;right:16px;
+  font-family:'Bebas Neue',cursive;font-size:90px;
+  color:rgba(224,32,32,.055);letter-spacing:2px;line-height:1;
+  pointer-events:none;transition:color .35s;
+}
+.tech-card:hover .tech-bg-num{color:rgba(224,32,32,.09)}
+.tech-title{font-size:16px;font-weight:700;letter-spacing:.3px;margin-bottom:12px}
+.tech-body{font-size:13px;color:var(--muted2);line-height:1.85;position:relative;z-index:1}
+
+/* ─────────────────────────────────────────
+   SECTION 3 — PARCOURS TIMELINE
+───────────────────────────────────────── */
+#parcours .timeline{display:flex;flex-direction:column}
+.tl-item{display:grid;grid-template-columns:110px 36px 1fr;align-items:flex-start}
+.tl-year{
+  font-family:'Bebas Neue',cursive;font-size:24px;
+  color:var(--red);letter-spacing:2px;line-height:1;
+  padding:26px 20px 26px 0;text-align:right;opacity:.75;
+}
+.tl-spine{display:flex;flex-direction:column;align-items:center;padding-top:30px}
+.tl-dot{
+  width:12px;height:12px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--border-red);
+  flex-shrink:0;z-index:1;transition:background .3s;
+}
+.tl-item.win .tl-dot{background:var(--red);box-shadow:0 0 10px var(--glow)}
+.tl-line{flex:1;width:2px;background:linear-gradient(180deg,rgba(224,32,32,.25),rgba(255,255,255,.05));min-height:48px}
+.tl-item:last-child .tl-line{display:none}
+.tl-content{
+  padding:18px 0 24px 28px;
+  border-bottom:1px solid var(--border);
+}
+.tl-item:last-child .tl-content{border-bottom:none}
+.tl-flag{
+  display:inline-block;font-size:9px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;padding:3px 10px;border-radius:2px;margin-bottom:10px;
+}
+.tl-flag.debut{background:rgba(136,144,164,.1);color:var(--muted2);border:1px solid var(--border)}
+.tl-flag.win{background:rgba(224,32,32,.14);color:var(--red);border:1px solid rgba(224,32,32,.28)}
+.tl-flag.title{background:var(--red);color:#fff;border:1px solid var(--red)}
+.tl-flag.loss{background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border)}
+.tl-title{font-size:15px;font-weight:700;margin-bottom:6px}
+.tl-desc{font-size:12px;color:var(--muted2);line-height:1.75}
+.tl-opp{font-size:11px;color:var(--muted);margin-top:6px;display:flex;align-items:center;gap:6px}
+.tl-opp::before{content:'↳';color:var(--red);opacity:.5}
+
+/* ─────────────────────────────────────────
+   SECTION 4 — GRANDS COMBATS
+───────────────────────────────────────── */
+#combats .fights-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:3px;margin-top:0}
+.fight-card{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:28px 32px;background:var(--bg);border:1px solid var(--border);
+  transition:border-color .3s,background .3s;
+}
+.fight-card:hover{border-color:var(--border-red);background:rgba(13,15,23,.7)}
+.fight-info{flex:1;min-width:0}
+.fight-date{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--red);opacity:.65;margin-bottom:5px}
+.fight-vs{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.fight-name{font-size:15px;font-weight:700}
+.fight-note{font-size:11px;color:var(--muted2);margin-top:5px}
+.fight-result{
+  font-family:'Bebas Neue',cursive;font-size:14px;letter-spacing:3px;
+  padding:8px 16px;border-radius:2px;flex-shrink:0;text-align:center;white-space:nowrap;
+}
+.fight-result.v{background:rgba(224,32,32,.15);color:var(--red);border:1px solid rgba(224,32,32,.28)}
+.fight-result.d{background:rgba(255,255,255,.04);color:var(--muted2);border:1px solid var(--border)}
+
+/* ─────────────────────────────────────────
+   SECTION 5 — IMPACT
+───────────────────────────────────────── */
+#impact{background:var(--card)}
+.impact-inner{max-width:1280px;margin:0 auto;padding:110px 60px}
+.impact-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-top:64px}
+.i-card{
+  padding:44px 20px;text-align:center;
+  background:var(--bg);border:1px solid var(--border);
+  position:relative;overflow:hidden;transition:border-color .3s;
+}
+.i-card:hover{border-color:var(--border-red)}
+.i-card::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:0;height:2px;background:var(--red);transition:width .4s;
+}
+.i-card:hover::before{width:80%}
+.i-num{font-family:'Bebas Neue',cursive;font-size:50px;color:var(--text);letter-spacing:2px;line-height:1;margin-bottom:8px}
+.i-num em{color:var(--red);font-style:normal}
+.i-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);line-height:1.5}
+
+/* ─────────────────────────────────────────
+   SECTION 6 — GALERIE
+───────────────────────────────────────── */
+#galerie .gal-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-rows:270px 210px;
+  gap:6px;
+}
+.gal-item{
+  position:relative;overflow:hidden;cursor:pointer;
+  background:var(--card);border:1px solid var(--border);
+  transition:border-color .4s;
+}
+.gal-item:hover{border-color:rgba(224,32,32,.4)}
+.gal-item::before{
+  content:'';position:absolute;inset:0;
+  background:rgba(7,8,12,.35);opacity:0;
+  transition:opacity .35s;z-index:2;
+}
+.gal-item:hover::before{opacity:1}
+.gal-item::after{
+  content:'↗';
+  position:absolute;bottom:16px;right:18px;
+  font-size:15px;color:var(--red);
+  opacity:0;transition:opacity .3s,transform .3s;z-index:3;
+  transform:translate(4px,-4px);
+}
+.gal-item:hover::after{opacity:1;transform:translate(0,0)}
+/* Special cells */
+.gal-item:nth-child(1){grid-column:span 2}
+.gal-item:nth-child(6){grid-column:span 2}
+.gal-lbl{
+  position:absolute;bottom:14px;left:16px;z-index:4;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--text);opacity:.45;transition:opacity .3s;
+}
+.gal-item:hover .gal-lbl{opacity:0}
+
+/* ─────────────────────────────────────────
+   SECTION 7 — CONTACT
+───────────────────────────────────────── */
+#contact .ct-wrap{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:64px}
+.ct-left{background:var(--card);border:1px solid var(--border);padding:52px}
+.ct-intro{font-size:15px;line-height:1.9;color:var(--muted2);margin-bottom:36px}
+.ct-intro strong{color:var(--text)}
+.ct-list{display:flex;flex-direction:column;gap:3px}
+.ct-row{
+  display:flex;flex-direction:column;padding:18px 24px;
+  background:var(--bg);border-left:2px solid rgba(224,32,32,.2);
+  transition:border-color .25s,background .25s;
+}
+.ct-row:hover{border-color:var(--red);background:rgba(224,32,32,.04)}
+.ct-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--red);opacity:.7;margin-bottom:5px}
+.ct-val{font-size:13px;font-weight:500}
+.ct-right{display:flex;flex-direction:column;gap:3px}
+.soc-link{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:24px 28px;background:var(--card);border:1px solid var(--border);
+  color:var(--text);transition:background .25s,border-color .25s,padding-left .25s;
+}
+.soc-link:hover{background:var(--card2);border-color:var(--border-red);padding-left:36px}
+.soc-l{display:flex;align-items:center;gap:16px}
+.soc-ico{font-size:20px;width:36px;text-align:center}
+.soc-platform{font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.soc-handle{font-size:11px;color:var(--muted);margin-top:2px}
+.soc-count{font-size:12px;color:var(--red);font-weight:600}
+
+/* ─────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────── */
+footer{
+  padding:36px 60px;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  border-top:1px solid var(--border);background:var(--card);
+}
+.ft-logo{font-family:'Bebas Neue',cursive;font-size:20px;letter-spacing:5px;color:var(--text)}
+.ft-logo em{color:var(--red);font-style:normal}
+.ft-center{text-align:center;font-size:11px;color:var(--muted);letter-spacing:1px}
+.ft-right{text-align:right;font-size:11px;color:var(--muted2);letter-spacing:1px}
+
+/* ─────────────────────────────────────────
+   REVEAL
+───────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
+.reveal.on{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:.1s}
+.reveal-d2{transition-delay:.2s}
+.reveal-d3{transition-delay:.3s}
+.reveal-d4{transition-delay:.4s}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────── */
+
+/* ── TABLET (≤1100px) ── */
+@media(max-width:1100px){
+  nav{padding:18px 32px}
+  .nav-menu,.nav-cta{display:none}
+  .nav-hamburger{display:flex}
+  .hero-main{grid-template-columns:1fr}
+  .hero-right{display:none}
+  .hero-left{padding:88px 32px 120px}
+  .hero-strip{position:absolute}
+  .hs-item{padding:18px 18px}
+  .sec,.sec-full .sec-inner,.impact-inner{padding:80px 32px}
+  #identite .id-wrap{grid-template-columns:1fr}
+  .id-visual{height:380px}
+  #technique .tech-grid{grid-template-columns:1fr 1fr}
+  #combats .fights-grid{grid-template-columns:1fr}
+  .impact-grid{grid-template-columns:repeat(3,1fr)}
+  .gal-grid{
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:220px 200px 200px;
+  }
+  .gal-item:nth-child(1){grid-column:span 2}
+  .gal-item:nth-child(6){grid-column:span 2}
+  #contact .ct-wrap{grid-template-columns:1fr}
+  footer{grid-template-columns:1fr;text-align:center;gap:10px}
+  .ft-right{text-align:center}
+}
+
+/* ── MOBILE (≤768px) ── */
+@media(max-width:768px){
+  nav{padding:14px 20px}
+  .hero-left{padding:80px 20px 120px}
+  .hero-title{font-size:clamp(70px,18vw,110px)}
+  .hero-tagline{font-size:10px;letter-spacing:3px}
+  .hero-btns{gap:10px}
+  .btn-main,.btn-sec{padding:12px 24px;font-size:10px}
+  .hero-strip{flex-wrap:wrap}
+  .hs-item{min-width:33%;flex:none;padding:14px 12px}
+  .hs-num{font-size:22px}
+  .sec,.sec-full .sec-inner,.impact-inner{padding:64px 20px}
+  .sec-h{font-size:clamp(36px,9vw,56px)}
+  .id-content{padding:28px 24px}
+  .id-facts{grid-template-columns:1fr 1fr}
+  #technique .tech-grid{grid-template-columns:1fr}
+  #parcours .tl-item{grid-template-columns:70px 28px 1fr}
+  #parcours .tl-year{font-size:19px;padding-right:12px;padding-top:22px}
+  .fight-card{padding:22px 20px;gap:14px}
+  .fight-name{font-size:14px}
+  .impact-grid{grid-template-columns:repeat(2,1fr)}
+  .gal-grid{
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:200px 180px 180px;
+  }
+  .ct-left{padding:28px 24px}
+  footer{padding:28px 20px}
+}
+
+/* ── TRÈS PETIT ÉCRAN (≤420px) ── */
+@media(max-width:420px){
+  nav{padding:12px 16px}
+  .nav-logo{font-size:18px;letter-spacing:3px}
+  .hero-left{padding:72px 16px 100px}
+  .hero-title{font-size:clamp(58px,15vw,86px)}
+  .hero-desc{font-size:13px}
+  .hs-item{min-width:50%;flex:none;padding:14px 12px}
+  .sec,.sec-full .sec-inner,.impact-inner{padding:48px 16px}
+  .sec-h{font-size:clamp(32px,8vw,48px)}
+  .id-content{padding:22px 16px}
+  .id-facts{grid-template-columns:1fr}
+  #parcours .tl-item{grid-template-columns:60px 24px 1fr}
+  #parcours .tl-year{font-size:16px;padding-right:10px}
+  .fight-card{padding:18px 16px}
+  .impact-grid{grid-template-columns:1fr 1fr}
+  .gal-grid{
+    grid-template-columns:1fr;
+    grid-template-rows:repeat(6,200px);
+  }
+  .gal-item:nth-child(1),.gal-item:nth-child(6){grid-column:auto}
+  .ct-left{padding:20px 16px}
+  footer{padding:24px 16px}
+  .ft-center{font-size:10px}
+  .nav-mob-inner ul li a{font-size:34px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     NAV
+═══════════════════════════════════════ -->
+<nav id="nav">
+  <div class="nav-logo">MODOU <em>LÔ</em></div>
+  <ul class="nav-menu">
+    <li><a href="#identite">Le Lutteur</a></li>
+    <li><a href="#technique">Technique</a></li>
+    <li><a href="#parcours">Parcours</a></li>
+    <li><a href="#combats">Combats</a></li>
+    <li><a href="#galerie">Galerie</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Booking</a>
+  <button class="nav-hamburger" aria-label="Ouvrir le menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MENU MOBILE OVERLAY -->
+<div class="nav-mobile-menu">
+  <div class="nav-mob-inner">
+    <ul>
+      <li><a href="#identite">Le Lutteur</a></li>
+      <li><a href="#technique">Technique</a></li>
+      <li><a href="#parcours">Parcours</a></li>
+      <li><a href="#combats">Combats</a></li>
+      <li><a href="#galerie">Galerie</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="btn-main">Booking</a>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     HERO
+═══════════════════════════════════════ -->
+<section id="hero">
+  <!-- Full-bleed background image -->
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=1800&q=80" alt="Arena"/>
+  </div>
+
+  <div class="hero-main">
+    <!-- Left — content -->
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <div class="chip">👑 8ème Roi des Arènes · Rock Énergie · Dakar</div>
+      </div>
+      <h1 class="hero-title">
+        <span class="t1">MODOU</span>
+        <span class="t2">XARAGNE</span>
+        <span class="t3">LÔ</span>
+      </h1>
+      <p class="hero-tagline">Le Roc des Parcelles · Lutte Sénégalaise</p>
+      <p class="hero-desc">
+        Des Parcelles Assainies aux plus hauts sommets du <strong>Lamb</strong> — Modou Xaragne Lô a construit un règne de sept ans fondé sur la technique, la foi et une détermination sans faille. <strong>Le plus grand lutteur de sa génération.</strong>
+      </p>
+      <div class="hero-btns">
+        <a href="#combats" class="btn-main">Ses grands combats</a>
+        <a href="#contact" class="btn-sec">Booking</a>
+      </div>
+    </div>
+
+    <!-- Right — floating badges -->
+    <div class="hero-right">
+      <div class="hero-badge hb1">
+        <div class="hb-num">22+</div>
+        <div class="hb-lbl">Victoires</div>
+      </div>
+      <div class="hero-badge hb2">
+        <div class="hb-num">2019</div>
+        <div class="hb-lbl">Couronné Roi</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats strip -->
+  <div class="hero-strip">
+    <div class="hs-item">
+      <div class="hs-bar"></div>
+      <div><div class="hs-num">22+</div><div class="hs-lbl">Victoires</div></div>
+    </div>
+    <div class="hs-item">
+      <div class="hs-bar"></div>
+      <div><div class="hs-num">19 ans</div><div class="hs-lbl">Carrière</div></div>
+    </div>
+    <div class="hs-item">
+      <div class="hs-bar"></div>
+      <div><div class="hs-num">8ème</div><div class="hs-lbl">Roi des Arènes</div></div>
+    </div>
+    <div class="hs-item">
+      <div class="hs-bar"></div>
+      <div><div class="hs-num">191K</div><div class="hs-lbl">Instagram</div></div>
+    </div>
+    <div class="hs-item">
+      <div class="hs-bar"></div>
+      <div><div class="hs-num">2006</div><div class="hs-lbl">Début pro</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 1 — IDENTITÉ
+═══════════════════════════════════════ -->
+<section id="identite" class="sec">
+  <div class="sec-head reveal">
+    <div class="sec-tag">01 — Le Lutteur</div>
+    <h2 class="sec-h">QUI EST <span class="hollow">MODOU LÔ</span> ?</h2>
+  </div>
+
+  <div class="id-wrap reveal">
+    <!-- Photo -->
+    <div class="id-visual">
+      <div class="ph-wrap">
+        <img src="https://images.unsplash.com/photo-1567013127542-490d757e51cd?w=800&q=80" alt="Modou Lô"/>
+      </div>
+      <div class="id-visual-foot">
+        <div class="id-big-num">8</div>
+        <div class="id-big-label">
+          <span class="top">Roi des Arènes</span>
+          <span class="bot">Rock Énergie · Dakar</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenu -->
+    <div class="id-content">
+      <div class="id-name">MODOU XARAGNE LÔ</div>
+      <div class="id-sub">Le Roc des Parcelles — Né le 28 décembre 1985</div>
+      <div class="id-tags">
+        <span class="id-tag">Rock Énergie</span>
+        <span class="id-tag">Lutte Sénégalaise</span>
+        <span class="id-tag">8ème Roi des Arènes</span>
+        <span class="id-tag">Parcelles Assainies</span>
+        <span class="id-tag">Lamb</span>
+      </div>
+      <p class="id-text">
+        Né le <strong>28 décembre 1985 aux Parcelles Assainies</strong> à Dakar, Modou Lô est issu d'une famille modeste originaire de <strong>Taïba Ndiaye</strong>, village wolof près de Tivaouane. Son père vendait du poisson aux Parcelles — une enfance sans héritage de lutteur, mais avec une volonté absolue d'exceller.
+      </p>
+      <p class="id-text">
+        Contrairement à la plupart des grands champions, Modou Lô <strong>ne vient pas d'une lignée de lutteurs</strong>. Son ascension est le fruit de sa seule détermination, d'un entraînement méticuleux et d'un talent naturel rare. Chef de file de l'écurie <strong>Rock Énergie</strong>, il est la fierté absolue de l'Unité 10 des Parcelles.
+      </p>
+      <p class="id-text">
+        Homme de foi profonde, il prépare ses combats entre spiritualité et stages physiques jusqu'à <strong>Paris</strong>. Sa devise : <em>« Qu'Allah accepte nos sacrifices et remplisse nos cœurs de paix. »</em>
+      </p>
+      <div class="id-facts">
+        <div class="id-fact"><div class="id-fact-lbl">Naissance</div><div class="id-fact-val">28 déc. 1985, Dakar</div></div>
+        <div class="id-fact"><div class="id-fact-lbl">Écurie</div><div class="id-fact-val">Rock Énergie</div></div>
+        <div class="id-fact"><div class="id-fact-lbl">Quartier</div><div class="id-fact-val">Parcelles Assainies</div></div>
+        <div class="id-fact"><div class="id-fact-lbl">Début pro</div><div class="id-fact-val">4 avril 2006</div></div>
+        <div class="id-fact"><div class="id-fact-lbl">Sacre royal</div><div class="id-fact-val">28 juillet 2019</div></div>
+        <div class="id-fact"><div class="id-fact-lbl">Bilan</div><div class="id-fact-val">22V · 1N · 3D</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 2 — TECHNIQUE
+═══════════════════════════════════════ -->
+<div class="sec-full">
+  <div class="sec-inner" id="technique">
+    <div class="sec-head reveal">
+      <div class="sec-tag">02 — Son Style</div>
+      <h2 class="sec-h">TECHNIQUE & <span class="hollow">PUISSANCE</span></h2>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card reveal reveal-d1">
+        <div class="tech-ico">⚡</div>
+        <div class="tech-bg-num">01</div>
+        <div class="tech-title">Gabarit Trompeur</div>
+        <div class="tech-body">D'un physique plus modeste que les géants de sa génération, Modou Lô compense par une densité musculaire hors-norme et une vitesse d'exécution que rares sont ses adversaires à égaler. Sa puissance de frappe défie son gabarit et prend ses adversaires par surprise.</div>
+      </div>
+      <div class="tech-card reveal reveal-d2">
+        <div class="tech-ico">🤸</div>
+        <div class="tech-bg-num">02</div>
+        <div class="tech-title">Maître des Deux Jambes</div>
+        <div class="tech-body">L'un des rares lutteurs de très haut niveau à utiliser efficacement ses deux jambes dans ses attaques, esquives et contre-attaques. Cette ambidextrie technique lui confère une imprévisibilité totale — une arme que ses adversaires peinent à anticiper même après analyse.</div>
+      </div>
+      <div class="tech-card reveal reveal-d3">
+        <div class="tech-ico">🧠</div>
+        <div class="tech-bg-num">03</div>
+        <div class="tech-title">Mental d'Acier</div>
+        <div class="tech-body">Dans l'arène, Modou Lô se transforme. Aucune peur visible, même face aux gabarits les plus imposants du Lamb. Sa force intérieure — nourrie par la foi, l'ancrage dans sa communauté et 19 ans de rigueur — est sans doute son arme la plus redoutée par ses adversaires.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="div"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 3 — PARCOURS TIMELINE
+═══════════════════════════════════════ -->
+<section id="parcours" class="sec">
+  <div class="sec-head reveal">
+    <div class="sec-tag">03 — Carrière</div>
+    <h2 class="sec-h">SON <span class="hollow">PARCOURS</span></h2>
+  </div>
+
+  <div class="timeline">
+    <!-- 2006 -->
+    <div class="tl-item reveal reveal-d1">
+      <div class="tl-year">2006</div>
+      <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content">
+        <span class="tl-flag debut">Débuts Professionnels</span>
+        <div class="tl-title">Premier combat — Victoire vs Pape Sène</div>
+        <div class="tl-desc">Le 4 avril 2006, le jeune Modou Lô des Parcelles Assainies fait ses débuts officiels dans l'arène. Victoire convaincante face à Pape Sène — Rock Énergie est en marche.</div>
+      </div>
+    </div>
+
+    <!-- 2010 -->
+    <div class="tl-item reveal reveal-d2">
+      <div class="tl-year">2010</div>
+      <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content">
+        <span class="tl-flag loss">Défaite</span>
+        <div class="tl-title">Première confrontation avec Balla Gaye 2</div>
+        <div class="tl-desc">Défaite face à Balla Gaye 2, alors au sommet de sa puissance. Un revers douloureux qui ne fait que renforcer la détermination de Modou Lô à revenir plus fort.</div>
+        <div class="tl-opp">Adversaire : Balla Gaye 2 · Grande rivalité sénégalaise</div>
+      </div>
+    </div>
+
+    <!-- 2015 -->
+    <div class="tl-item reveal reveal-d1">
+      <div class="tl-year">2015</div>
+      <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content">
+        <span class="tl-flag loss">Défaite</span>
+        <div class="tl-title">Combat Bombardier — Défaite face au Roi</div>
+        <div class="tl-desc">Défaite contre Bombardier, alors double Roi des Arènes en titre. Modou Lô s'affirme comme challenger numéro un et comprend qu'il doit encore affiner son arsenal technique.</div>
+        <div class="tl-opp">Adversaire : Bombardier · Roi des Arènes en exercice</div>
+      </div>
+    </div>
+
+    <!-- 2016 -->
+    <div class="tl-item win reveal reveal-d2">
+      <div class="tl-year">2016</div>
+      <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content">
+        <span class="tl-flag win">Victoire</span>
+        <div class="tl-title">Victoire vs Gris Bordeaux — La montée en puissance</div>
+        <div class="tl-desc">Victoire décisive sur Gris Bordeaux. Modou Lô confirme sa place parmi l'élite de la lutte sénégalaise et s'impose comme l'un des prétendants les plus sérieux au trône.</div>
+        <div class="tl-opp">Adversaire : Gris Bordeaux</div>
+      </div>
+    </div>
+
+    <!-- 2019 — Sacre -->
+    <div class="tl-item win reveal reveal-d3">
+      <div class="tl-year">2019</div>
+      <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content">
+        <span class="tl-flag title">👑 Sacre Royal</span>
+        <div class="tl-title">K.-O. sur Eumeu Sène — 8ème Roi des Arènes</div>
+        <div class="tl-desc">Le 28 juillet 2019, devant des dizaines de milliers de spectateurs, Modou Lô terrasse Eumeu Sène par K.-O. et s'empare de la couronne. Treize ans de sacrifice récompensés. Le Roc des Parcelles est roi.</div>
+        <div class="tl-opp">Adversaire : Eumeu Sène · K.-O. · 28 juillet 2019</div>
+      </div>
+    </div>
+
+    <!-- 2024 -->
+    <div class="tl-item win reveal reveal-d2">
+      <div class="tl-year">2024</div>
+      <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content">
+        <span class="tl-flag win">Défense du Titre</span>
+        <div class="tl-title">Victoire vs Boy Niang 2 — Le trône confirmé</div>
+        <div class="tl-desc">Le 1er janvier 2024, Modou Lô domine Boy Niang 2 dès le premier round au Combat Royal. Une victoire expéditive qui rappelle à tous sa domination sur la lutte sénégalaise.</div>
+        <div class="tl-opp">Adversaire : Boy Niang 2 · 1er round · Combat Royal</div>
+      </div>
+    </div>
+
+    <!-- 2026 — Fin de règne -->
+    <div class="tl-item reveal reveal-d3">
+      <div class="tl-year">2026</div>
+      <div class="tl-spine"><div class="tl-dot"></div></div>
+      <div class="tl-content">
+        <span class="tl-flag loss">Fin de Règne</span>
+        <div class="tl-title">Sa Thiès prend la couronne — 7 ans de règne</div>
+        <div class="tl-desc">Le 5 avril 2026, après 7 ans de règne incontesté, Modou Lô perd son titre face à Sa Thiès. Un règne d'exception qui restera gravé comme l'un des plus longs et des plus marquants de l'histoire du Lamb.</div>
+        <div class="tl-opp">Adversaire : Sa Thiès (frère de Balla Gaye 2) · 5 avril 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 4 — GRANDS COMBATS
+═══════════════════════════════════════ -->
+<div class="sec-full">
+  <div class="sec-inner" id="combats">
+    <div class="sec-head reveal">
+      <div class="sec-tag">04 — Affrontements</div>
+      <h2 class="sec-h">GRANDS <span class="hollow">COMBATS</span></h2>
+    </div>
+    <div class="fights-grid">
+      <div class="fight-card reveal reveal-d1">
+        <div class="fight-info">
+          <div class="fight-date">28 Juillet 2019</div>
+          <div class="fight-vs">VS</div>
+          <div class="fight-name">Eumeu Sène</div>
+          <div class="fight-note">K.-O. · Sacre Roi des Arènes · Combat historique</div>
+        </div>
+        <div class="fight-result v">VICTOIRE</div>
+      </div>
+      <div class="fight-card reveal reveal-d2">
+        <div class="fight-info">
+          <div class="fight-date">1er Janvier 2024</div>
+          <div class="fight-vs">VS</div>
+          <div class="fight-name">Boy Niang 2</div>
+          <div class="fight-note">1er round · Défense du titre · Combat Royal</div>
+        </div>
+        <div class="fight-result v">VICTOIRE</div>
+      </div>
+      <div class="fight-card reveal reveal-d1">
+        <div class="fight-info">
+          <div class="fight-date">2016</div>
+          <div class="fight-vs">VS</div>
+          <div class="fight-name">Gris Bordeaux</div>
+          <div class="fight-note">Victoire convaincante · Montée en puissance</div>
+        </div>
+        <div class="fight-result v">VICTOIRE</div>
+      </div>
+      <div class="fight-card reveal reveal-d2">
+        <div class="fight-info">
+          <div class="fight-date">2015</div>
+          <div class="fight-vs">VS</div>
+          <div class="fight-name">Bombardier</div>
+          <div class="fight-note">Combat pour le titre · Leçon retenue</div>
+        </div>
+        <div class="fight-result d">DÉFAITE</div>
+      </div>
+      <div class="fight-card reveal reveal-d3">
+        <div class="fight-info">
+          <div class="fight-date">2010 · 2019</div>
+          <div class="fight-vs">VS</div>
+          <div class="fight-name">Balla Gaye 2</div>
+          <div class="fight-note">2 confrontations · Rivalité emblématique</div>
+        </div>
+        <div class="fight-result d">DÉFAITE ×2</div>
+      </div>
+      <div class="fight-card reveal reveal-d4">
+        <div class="fight-info">
+          <div class="fight-date">5 Avril 2026</div>
+          <div class="fight-vs">VS</div>
+          <div class="fight-name">Sa Thiès</div>
+          <div class="fight-note">Fin de règne · 7 ans après la couronne</div>
+        </div>
+        <div class="fight-result d">DÉFAITE</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="div"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 5 — IMPACT
+═══════════════════════════════════════ -->
+<div id="impact">
+  <div class="impact-inner">
+    <div class="sec-head reveal">
+      <div class="sec-tag">05 — Chiffres</div>
+      <h2 class="sec-h">UN RÈGNE <span class="hollow">EN CHIFFRES</span></h2>
+    </div>
+    <div class="impact-grid">
+      <div class="i-card reveal reveal-d1">
+        <div class="i-num"><em>22</em>+</div>
+        <div class="i-lbl">Victoires en carrière</div>
+      </div>
+      <div class="i-card reveal reveal-d2">
+        <div class="i-num"><em>7</em> ans</div>
+        <div class="i-lbl">Règne 2019–2026</div>
+      </div>
+      <div class="i-card reveal reveal-d3">
+        <div class="i-num"><em>19</em>+</div>
+        <div class="i-lbl">Ans de carrière</div>
+      </div>
+      <div class="i-card reveal reveal-d4">
+        <div class="i-num"><em>191</em>K</div>
+        <div class="i-lbl">Abonnés Instagram</div>
+      </div>
+      <div class="i-card reveal">
+        <div class="i-num"><em>8</em>ème</div>
+        <div class="i-lbl">Roi des Arènes du Sénégal</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="div"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 6 — GALERIE
+═══════════════════════════════════════ -->
+<section id="galerie" class="sec">
+  <div class="sec-head reveal">
+    <div class="sec-tag">06 — Galerie</div>
+    <h2 class="sec-h">EN <span class="hollow">IMAGES</span></h2>
+  </div>
+  <div class="gal-grid reveal">
+
+    <div class="gal-item">
+      <div class="gal-img">
+        <img src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=900&q=80" alt="Arène"/>
+      </div>
+      <span class="gal-lbl">Dans l'arène</span>
+    </div>
+    <div class="gal-item">
+      <div class="gal-img">
+        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=700&q=80" alt="Entraînement"/>
+      </div>
+      <span class="gal-lbl">Entraînement</span>
+    </div>
+    <div class="gal-item">
+      <div class="gal-img">
+        <img src="https://images.unsplash.com/photo-1530577197743-7adf14294584?w=700&q=80" alt="Préparation"/>
+      </div>
+      <span class="gal-lbl">Préparation</span>
+    </div>
+    <div class="gal-item">
+      <div class="gal-img">
+        <img src="https://images.unsplash.com/photo-1590556409324-aa1d726e5c3c?w=700&q=80" alt="Concentration"/>
+      </div>
+      <span class="gal-lbl">Concentration</span>
+    </div>
+    <div class="gal-item">
+      <div class="gal-img">
+        <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=700&q=80" alt="Victoire"/>
+      </div>
+      <span class="gal-lbl">Victoire</span>
+    </div>
+    <div class="gal-item">
+      <div class="gal-img">
+        <img src="https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=900&q=80" alt="Champion"/>
+      </div>
+      <span class="gal-lbl">Le Roi des Arènes</span>
+    </div>
+
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 7 — CONTACT
+═══════════════════════════════════════ -->
+<section id="contact" class="sec">
+  <div class="sec-head reveal">
+    <div class="sec-tag">07 — Booking & Contact</div>
+    <h2 class="sec-h">TRAVAILLER AVEC <span class="hollow">MODOU LÔ</span></h2>
+  </div>
+  <div class="ct-wrap reveal">
+    <div class="ct-left">
+      <p class="ct-intro">Pour toute réservation d'événement sportif, apparition publique, partenariat ou collaboration avec <strong>Modou Xaragne Lô</strong> — 8ème Roi des Arènes du Sénégal — contactez l'écurie officielle Rock Énergie.</p>
+      <div class="ct-list">
+        <div class="ct-row"><div class="ct-lbl">🏟️ Écurie</div><div class="ct-val">Rock Énergie — Parcelles Assainies, Dakar</div></div>
+        <div class="ct-row"><div class="ct-lbl">📍 Base</div><div class="ct-val">Unité 10, Parcelles Assainies, Dakar</div></div>
+        <div class="ct-row"><div class="ct-lbl">🏆 Titre</div><div class="ct-val">8ème Roi des Arènes du Sénégal (2019–2026)</div></div>
+        <div class="ct-row"><div class="ct-lbl">🥋 Discipline</div><div class="ct-val">Lutte Sénégalaise — Lamb</div></div>
+        <div class="ct-row"><div class="ct-lbl">🇸🇳 Pays</div><div class="ct-val">République du Sénégal</div></div>
+      </div>
+    </div>
+    <div class="ct-right">
+      <a href="https://www.instagram.com/modou.xlo/" target="_blank" class="soc-link">
+        <div class="soc-l"><span class="soc-ico">📸</span><div><div class="soc-platform">Instagram</div><div class="soc-handle">@modou.xlo</div></div></div>
+        <span class="soc-count">191K</span>
+      </a>
+      <a href="https://www.instagram.com/modou_xaragne_lo_official/" target="_blank" class="soc-link">
+        <div class="soc-l"><span class="soc-ico">📸</span><div><div class="soc-platform">Instagram Officiel</div><div class="soc-handle">@modou_xaragne_lo_official</div></div></div>
+        <span class="soc-count">↗</span>
+      </a>
+      <a href="https://x.com/Modouxlo" target="_blank" class="soc-link">
+        <div class="soc-l"><span class="soc-ico">🐦</span><div><div class="soc-platform">Twitter / X</div><div class="soc-handle">@Modouxlo</div></div></div>
+        <span class="soc-count">↗</span>
+      </a>
+      <a href="#contact" class="soc-link">
+        <div class="soc-l"><span class="soc-ico">🏟️</span><div><div class="soc-platform">Rock Énergie</div><div class="soc-handle">Écurie officielle de Modou Lô</div></div></div>
+        <span class="soc-count">↗</span>
+      </a>
+      <a href="#contact" class="soc-link">
+        <div class="soc-l"><span class="soc-ico">🥋</span><div><div class="soc-platform">Booking Officiel</div><div class="soc-handle">Événements · Partenariats · Médias</div></div></div>
+        <span class="soc-count">↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════ -->
+<footer>
+  <div class="ft-logo">MODOU <em>LÔ</em></div>
+  <div class="ft-center">© 2025 Modou Xaragne Lô — Rock Énergie<br>8ème Roi des Arènes du Sénégal</div>
+  <div class="ft-right">Parcelles Assainies · Dakar · Sénégal</div>
+</footer>
+
+
+<!-- SCROLL REVEAL + NAV + HAMBURGER -->
+<script>
+/* Scroll reveal */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){ e.target.classList.add('on'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.07 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* Nav scroll opacity */
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  navEl.style.background = window.scrollY > 40
+    ? 'rgba(7,8,12,.97)'
+    : 'rgba(7,8,12,.82)';
+});
+
+/* Hamburger menu */
+const hamburger = document.querySelector('.nav-hamburger');
+const mobileMenu = document.querySelector('.nav-mobile-menu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+});
+mobileMenu.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+</script>
+
+</body>
+</html>
